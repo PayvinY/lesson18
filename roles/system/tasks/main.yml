@@ -1,0 +1,33 @@
+---
+- name: Add nodeJS gpg key
+  apt_key:
+          url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
+          state: present
+
+- name: Add NodeJS repo
+  apt_repository:
+          repo: deb https://deb.nodesource.com/node_10.x bionic main
+          state: present
+
+
+- name: Install dependencies
+  apt:
+          name:
+                  - python3-pip
+                  - git
+                  - python-dev
+                  - build-essential
+                  - nodejs
+                  - aptitude
+                    #                  - npm
+
+                    #          force_apt_get: yes
+          state: latest
+          update_cache: yes
+
+- name: Install pymongo
+  pip:
+          name:
+                  - pymongo
+          state: latest
+

@@ -1,0 +1,23 @@
+---
+ - name: Add Mongo GPG key
+   apt_key:
+          url: https://www.mongodb.org/static/pgp/server-4.4.asc
+          state: present
+
+ - name: Enable mongo repo          
+   copy:
+          src: mongo-repo
+          dest: /etc/apt/sources.list.d/mongodb-org-4.4.list
+          
+ - name: Install MongoDB
+   apt:
+          update_cache: yes
+          name:  
+            - mongodb-org
+          state: latest
+
+ - name: configure mongodb service
+   service:
+          name: mongod
+          enabled: yes
+          state: started

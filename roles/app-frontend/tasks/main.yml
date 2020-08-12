@@ -1,0 +1,56 @@
+---
+- name: Get frontend code
+  git: 
+      repo: https://github.com/gothinkster/react-redux-realworld-example-app.git
+      dest: /home/ubuntu/fe-src/
+
+      #- name: Install npm
+      #   apt:
+      #          name: npm
+      #          state: present
+          #          upgrade: yes  
+
+- name: Create folder
+  file:
+      path: /home/ubuntu/build
+      state: directory
+
+- name: Build fronend code
+  npm:
+      name: build
+      path: /home/ubuntu/build
+  # Подсказка: смотрите как мы собирали frontend в Dockerfile 
+  # или загляните в репозиторий "hillel-practice-project" на github (ваши аккаунты github в него я уже добавил)
+  # Чтобы код собрался, вам нужно установить nodejs. Это стоит сделать в роли system.
+
+- name: Delete directory /var/www/html
+  file:
+       path: /var/www/html
+       state: absent
+
+- name: Create /var/www/html
+  file:
+        path: /var/www/html
+        state: directory
+        mode: 775  
+
+- name: Copy build 
+  copy:
+      src: /home/ubuntu/build
+      dest: /var/www/html
+      remote_src: yes
+      # Это должен быть каталог отличный от /home/ubuntu/fe-src/ – скопируйте в него файлы собранного приложения
+
+      #- name: Add Nginx config for the website 
+  # Добавьте конфиг файл для сайта явно, не редактируйте default.
+  # - тут пропущенна какая-то задача, которая должна применить изменения конфигурации для Nginx
+- name: Restart nginx
+  service:
+    name: nginx
+    state: restarted
+
+- name: Clean-up /home/ubuntu/fe-src/ folder 
+  file:
+    path: /home/ubuntu/fe-src/ 
+    state: absent
+  # Каталог /home/ubuntu/fe-src/ должен быть пустым после завершения этой роли

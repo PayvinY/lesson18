@@ -1,0 +1,15 @@
+---
+- name: Class18
+  hosts: web 
+  #  become: yes
+  #  become_method: sudo
+  roles:
+   - role: system
+     tags: system
+   - role: database
+     tags: database
+   - role: webserver
+     tags: webserver
+   - role: app-frontend
+     tags: [frontend,app-fronend]
+     #   - app-backend
