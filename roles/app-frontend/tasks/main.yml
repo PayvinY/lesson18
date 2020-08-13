@@ -5,9 +5,8 @@
       dest: /home/ubuntu/fe-src/
 
 - name: Install npm
-  shell: npm i
-  args:
-     chdir: /home/ubuntu/fe-src/
+  npm:
+   path: /home/ubuntu/fe-src/
 
      #- name: Create folder
      #  file:
